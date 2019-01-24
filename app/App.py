@@ -1,5 +1,8 @@
 from flask import Flask, render_template
 from flask import request
+from app.datos.usuariosDAO import UsuarioDAO
+import os
+
 app=Flask(__name__)
 @app.route('/')
 def index():
@@ -16,9 +19,12 @@ def param():
 def login():
     user=request.form['user']
     pwd=request.form['pwd']
-    return '<h1>Usuario: %s , Password:%s </h1>'%(user,pwd)
-
-
+    udao = UsuarioDAO()
+    result=udao.validarLogin(user,pwd)
+    if result == 'true' :
+        return '<h1>! Bienvenido  %s !</h1>'%(user)
+    else:
+        return  '<h1> ERROR EN LA AUTENTICACION</h1>'
 
 
 if __name__ == '__main__':
